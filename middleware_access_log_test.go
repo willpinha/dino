@@ -392,3 +392,215 @@ func TestAccessLogMiddleware_NoOptions(t *testing.T) {
 	// Should have written the response
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestAccessLogMiddleware_WithRequestAttrs(t *testing.T) {
+	mockHandler := &mockLogHandler{}
+	logger := slog.New(mockHandler)
+
+	middleware := httpbox.AccessLogMiddleware(
+		httpbox.WithAccessLogger(logger),
+		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+			return []any{
+				slog.String("user_agent", r.UserAgent()),
+				slog.String("host", r.Host),
+			}
+		}),
+	)
+
+	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
+		w.WriteHeader(http.StatusOK)
+		return nil
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/test", nil)
+	req.Header.Set("User-Agent", "TestAgent/1.0")
+	req.Host = "example.com"
+	w := httptest.NewRecorder()
+
+	err := handler(w, req)
+
+	assert.NoError(t, err)
+	require.Len(t, mockHandler.records, 1)
+
+	record := mockHandler.records[0]
+
+	// Verify default request attributes are still present
+	assert.Equal(t, "GET", record.attrs["req.method"])
+	assert.Equal(t, "/test", record.attrs["req.url"])
+
+	// Verify custom attributes were added
+	assert.Equal(t, "TestAgent/1.0", record.attrs["req.user_agent"])
+	assert.Equal(t, "example.com", record.attrs["req.host"])
+}
+
+func TestAccessLogMiddleware_WithResponseAttrs(t *testing.T) {
+	mockHandler := &mockLogHandler{}
+	logger := slog.New(mockHandler)
+
+	middleware := httpbox.AccessLogMiddleware(
+		httpbox.WithAccessLogger(logger),
+		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+			return []any{
+				slog.String("custom_field", "custom_value"),
+				slog.Bool("success", true),
+			}
+		}),
+	)
+
+	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte("Created"))
+		return nil
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/create", nil)
+	w := httptest.NewRecorder()
+
+	err := handler(w, req)
+
+	assert.NoError(t, err)
+	require.Len(t, mockHandler.records, 1)
+
+	record := mockHandler.records[0]
+
+	// Verify default response attributes are still present
+	assert.Equal(t, int64(201), record.attrs["res.status"])
+	assert.Equal(t, int64(7), record.attrs["res.body_size"])
+
+	// Verify custom attributes were added
+	assert.Equal(t, "custom_value", record.attrs["res.custom_field"])
+	assert.Equal(t, true, record.attrs["res.success"])
+}
+
+func TestAccessLogMiddleware_WithBothCustomAttrs(t *testing.T) {
+	mockHandler := &mockLogHandler{}
+	logger := slog.New(mockHandler)
+
+	middleware := httpbox.AccessLogMiddleware(
+		httpbox.WithAccessLogger(logger),
+		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+			return []any{
+				slog.String("request_id", r.Header.Get("X-Request-ID")),
+			}
+		}),
+		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+			return []any{
+				slog.String("trace_id", "abc123"),
+			}
+		}),
+	)
+
+	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+		return nil
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/test", nil)
+	req.Header.Set("X-Request-ID", "req-12345")
+	w := httptest.NewRecorder()
+
+	err := handler(w, req)
+
+	assert.NoError(t, err)
+	require.Len(t, mockHandler.records, 1)
+
+	record := mockHandler.records[0]
+
+	// Verify default attributes are present
+	assert.Equal(t, "GET", record.attrs["req.method"])
+	assert.Equal(t, int64(200), record.attrs["res.status"])
+
+	// Verify custom request attributes
+	assert.Equal(t, "req-12345", record.attrs["req.request_id"])
+
+	// Verify custom response attributes
+	assert.Equal(t, "abc123", record.attrs["res.trace_id"])
+}
+
+func TestAccessLogMiddleware_WithEmptyCustomAttrs(t *testing.T) {
+	mockHandler := &mockLogHandler{}
+	logger := slog.New(mockHandler)
+
+	// Test with functions that return empty slices
+	middleware := httpbox.AccessLogMiddleware(
+		httpbox.WithAccessLogger(logger),
+		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+			return []any{}
+		}),
+		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+			return []any{}
+		}),
+	)
+
+	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
+		w.WriteHeader(http.StatusOK)
+		return nil
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/test", nil)
+	w := httptest.NewRecorder()
+
+	err := handler(w, req)
+
+	assert.NoError(t, err)
+	require.Len(t, mockHandler.records, 1)
+
+	record := mockHandler.records[0]
+
+	// Verify default attributes are still present
+	assert.Equal(t, "GET", record.attrs["req.method"])
+	assert.Equal(t, int64(200), record.attrs["res.status"])
+}
+
+func TestAccessLogMiddleware_WithMultipleCustomAttrs(t *testing.T) {
+	mockHandler := &mockLogHandler{}
+	logger := slog.New(mockHandler)
+
+	middleware := httpbox.AccessLogMiddleware(
+		httpbox.WithAccessLogger(logger),
+		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+			return []any{
+				slog.String("user_agent", r.UserAgent()),
+				slog.String("referer", r.Referer()),
+				slog.Int("content_length", int(r.ContentLength)),
+			}
+		}),
+		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+			return []any{
+				slog.String("content_type", "application/json"),
+				slog.Bool("cached", false),
+				slog.Duration("processing_time", 0),
+			}
+		}),
+	)
+
+	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"status":"ok"}`))
+		return nil
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/api/endpoint", nil)
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+	req.Header.Set("Referer", "https://example.com")
+	req.ContentLength = 42
+	w := httptest.NewRecorder()
+
+	err := handler(w, req)
+
+	assert.NoError(t, err)
+	require.Len(t, mockHandler.records, 1)
+
+	record := mockHandler.records[0]
+
+	// Verify all custom request attributes
+	assert.Equal(t, "Mozilla/5.0", record.attrs["req.user_agent"])
+	assert.Equal(t, "https://example.com", record.attrs["req.referer"])
+	assert.Equal(t, int64(42), record.attrs["req.content_length"])
+
+	// Verify all custom response attributes
+	assert.Equal(t, "application/json", record.attrs["res.content_type"])
+	assert.Equal(t, false, record.attrs["res.cached"])
+	assert.Contains(t, record.attrs, "res.processing_time")
+}

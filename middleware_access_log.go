@@ -7,6 +7,10 @@ import (
 
 const LevelAccess = slog.Level(1)
 
+type AccessSkipFunc func(r *http.Request) bool
+type AccessRequestAttrsFunc func(r *http.Request) []any
+type AccessResponseAttrsFunc func(w http.ResponseWriter) []any
+
 type accessResponseWriter struct {
 	http.ResponseWriter
 	statusCode int
@@ -29,9 +33,11 @@ func (arw *accessResponseWriter) Write(b []byte) (int, error) {
 }
 
 type accessLogConfig struct {
-	logger   *slog.Logger
-	level    slog.Level
-	skipFunc func(r *http.Request) bool
+	logger           *slog.Logger
+	level            slog.Level
+	skipFunc         AccessSkipFunc
+	requestAttrsFunc AccessRequestAttrsFunc
+	responseAttrsFunc AccessResponseAttrsFunc
 }
 
 func newAccessLogConfig(opts ...AccessLogOption) accessLogConfig {
@@ -59,9 +65,21 @@ func WithAccessLevel(level slog.Level) AccessLogOption {
 	}
 }
 
-func WithAccessSkipFunc(skipFunc func(r *http.Request) bool) AccessLogOption {
+func WithAccessSkipFunc(skipFunc AccessSkipFunc) AccessLogOption {
 	return func(options *accessLogConfig) {
 		options.skipFunc = skipFunc
+	}
+}
+
+func WithAccessRequestAttrs(fn AccessRequestAttrsFunc) AccessLogOption {
+	return func(options *accessLogConfig) {
+		options.requestAttrsFunc = fn
+	}
+}
+
+func WithAccessResponseAttrs(fn AccessResponseAttrsFunc) AccessLogOption {
+	return func(options *accessLogConfig) {
+		options.responseAttrsFunc = fn
 	}
 }
 
@@ -78,16 +96,24 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 
 			err := h(arw, r)
 
-			reqGroup := slog.Group("req",
+			reqAttrs := []any{
 				slog.String("method", r.Method),
 				slog.String("url", r.URL.String()),
 				slog.String("remote_addr", r.RemoteAddr),
-			)
+			}
+			if options.requestAttrsFunc != nil {
+				reqAttrs = append(reqAttrs, options.requestAttrsFunc(r)...)
+			}
+			reqGroup := slog.Group("req", reqAttrs...)
 
-			resGroup := slog.Group("res",
+			resAttrs := []any{
 				slog.Int("status", arw.statusCode),
 				slog.Int("body_size", arw.bodySize),
-			)
+			}
+			if options.responseAttrsFunc != nil {
+				resAttrs = append(resAttrs, options.responseAttrsFunc(arw)...)
+			}
+			resGroup := slog.Group("res", resAttrs...)
 
 			options.logger.Log(r.Context(), options.level, "Access", reqGroup, resGroup)
 
