@@ -5,14 +5,7 @@ import (
 	"net/http"
 )
 
-type Middleware func(Handler) Handler
-
-func applyMiddlewares(h Handler, middlewares ...Middleware) Handler {
-	for i := len(middlewares) - 1; i >= 0; i-- {
-		h = middlewares[i](h)
-	}
-	return h
-}
+const LevelAccess = slog.Level(1)
 
 type accessResponseWriter struct {
 	http.ResponseWriter
@@ -35,16 +28,14 @@ func (arw *accessResponseWriter) Write(b []byte) (int, error) {
 	return size, err
 }
 
-const LevelAccess = slog.Level(1)
-
-type AccessLogConfig struct {
+type accessLogConfig struct {
 	logger   *slog.Logger
 	level    slog.Level
 	skipFunc func(r *http.Request) bool
 }
 
-func NewAccessLogConfig(opts ...AccessLogOption) AccessLogConfig {
-	options := AccessLogConfig{
+func newAccessLogConfig(opts ...AccessLogOption) accessLogConfig {
+	options := accessLogConfig{
 		logger: slog.Default(),
 		level:  LevelAccess,
 	}
@@ -54,28 +45,28 @@ func NewAccessLogConfig(opts ...AccessLogOption) AccessLogConfig {
 	return options
 }
 
-type AccessLogOption func(*AccessLogConfig)
+type AccessLogOption func(*accessLogConfig)
 
 func WithAccessLogger(logger *slog.Logger) AccessLogOption {
-	return func(options *AccessLogConfig) {
+	return func(options *accessLogConfig) {
 		options.logger = logger
 	}
 }
 
 func WithAccessLevel(level slog.Level) AccessLogOption {
-	return func(options *AccessLogConfig) {
+	return func(options *accessLogConfig) {
 		options.level = level
 	}
 }
 
 func WithAccessSkipFunc(skipFunc func(r *http.Request) bool) AccessLogOption {
-	return func(options *AccessLogConfig) {
+	return func(options *accessLogConfig) {
 		options.skipFunc = skipFunc
 	}
 }
 
 func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
-	options := NewAccessLogConfig(opts...)
+	options := newAccessLogConfig(opts...)
 
 	return func(h Handler) Handler {
 		return func(w http.ResponseWriter, r *http.Request) error {
