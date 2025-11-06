@@ -48,7 +48,7 @@ func TestHandler_ServeHTTP(t *testing.T) {
 				return errors.New("something went wrong")
 			}),
 			expectedCode: http.StatusInternalServerError,
-			expectedBody: `{"code":500,"message":"Unexpected error occurred"}`,
+			expectedBody: `{"code":500,"message":"Unknown error occurred"}`,
 		},
 		{
 			name: "error with non-serializable details",

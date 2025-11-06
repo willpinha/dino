@@ -23,7 +23,7 @@ func handleError(w http.ResponseWriter, err error) {
 	// This avoids leaking internal error details to the client. The library user
 	// should wrap errors in httpbox.Error to provide proper status codes and messages
 	if !errors.As(err, &httpErr) {
-		httpErr = NewError(http.StatusInternalServerError, "Unexpected error occurred",
+		httpErr = NewError(http.StatusInternalServerError, "Unknown error occurred",
 			WithInternalError(err),
 			WithLog(),
 		)
