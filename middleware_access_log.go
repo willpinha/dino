@@ -98,8 +98,9 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 
 			reqAttrs := []any{
 				slog.String("method", r.Method),
-				slog.String("url", r.URL.String()),
+				slog.String("endpoint", r.Pattern),
 				slog.String("remote_addr", r.RemoteAddr),
+				slog.Int64("content_length", r.ContentLength),
 			}
 			if options.requestAttrsFunc != nil {
 				reqAttrs = append(reqAttrs, options.requestAttrsFunc(r)...)
