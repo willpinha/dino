@@ -2,7 +2,7 @@
 
 # HTTP Box
 
-🧰 Lightweight HTTP library compatible with net/http
+🧰 Lightweight HTTP library compatible with `net/http`
 
 [About]() ⋅ [Philosophy]() ⋅ [Documentation]() ⋅ [License]()
 
