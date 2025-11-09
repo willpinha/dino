@@ -10,8 +10,8 @@
 
 ## About
 
-## Philosophy
-
 ## Documentation
 
 ## License
+
+This library is under the [MIT license]()
