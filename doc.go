@@ -14,16 +14,4 @@ thin layer built on top of net/http for functionalities commonly needed when bui
 
 It also follows the Go philosophy, which is to maintain simplicity and not apply breaking changes or
 major versions all the time. That's why HTTP Box is still in version 1 (just like Go)
-
-# Features
-
-- Handlers that return errors
-- Centralized error handling
-- Middlewares for various use cases (access logging, rate limit, ...)
-- Request utilities:
-	- Manual body validation
-	- Automatic validation of query and URL parameters
-- Response utilities:
-	- Responses for various content types (JSON, XML, ...)
-	- Standard error responses
 */
