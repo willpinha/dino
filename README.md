@@ -14,7 +14,7 @@ HTTP Box is a lightweight library that contains utilities compatible with the `n
 If you want to work directly with `net/http`, without relying on abstractions, but don't want to
 implement common functionalities from scratch, HTTP Box is the right library for you
 
-## 💭Philosophy
+## 💭 Philosophy
 
 HTTP Box doesn't try to be the magic solution that solves all your problems. Instead, it provides a
 thin layer built on top of net/http for functionalities commonly needed when building applications
