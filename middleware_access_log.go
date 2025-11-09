@@ -33,10 +33,10 @@ func (arw *accessResponseWriter) Write(b []byte) (int, error) {
 }
 
 type accessLogConfig struct {
-	logger           *slog.Logger
-	level            slog.Level
-	skipFunc         AccessSkipFunc
-	requestAttrsFunc AccessRequestAttrsFunc
+	logger            *slog.Logger
+	level             slog.Level
+	skipFunc          AccessSkipFunc
+	requestAttrsFunc  AccessRequestAttrsFunc
 	responseAttrsFunc AccessResponseAttrsFunc
 }
 
@@ -115,7 +115,7 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 			}
 			resGroup := slog.Group("res", resAttrs...)
 
-			options.logger.Log(r.Context(), options.level, "Access", reqGroup, resGroup)
+			options.logger.Log(r.Context(), options.level, "Access log", reqGroup, resGroup)
 
 			return err
 		}
