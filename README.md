@@ -31,7 +31,7 @@ major versions all the time. That's why HTTP Box is still in version 1 (just lik
   - Manual body validation
   - Automatic validation of query and URL parameters
 - Response utilities:
-  - Responses for various content types (JSON, XML, ...)
+  - Responses for all content types (JSON, XML, ...)
   - Standard error responses
 
 ## Documentation
