@@ -8,13 +8,13 @@
 
 </div>
 
-## About
+## 📖 About
 
 HTTP Box is a lightweight library that contains utilities compatible with the `net/http` package.
 If you want to work directly with `net/http`, without relying on abstractions, but don't want to
 implement common functionalities from scratch, HTTP Box is the right library for you
 
-## Philosophy
+## 💭Philosophy
 
 HTTP Box doesn't try to be the magic solution that solves all your problems. Instead, it provides a
 thin layer built on top of net/http for functionalities commonly needed when building applications
@@ -22,7 +22,7 @@ thin layer built on top of net/http for functionalities commonly needed when bui
 It also follows the Go philosophy, which is to maintain simplicity and not apply breaking changes or
 major versions all the time. That's why HTTP Box is still in version 1 (just like Go)
 
-## Features
+## 🛠️ Features
 
 - Handlers that return errors
 - Centralized error handling
@@ -34,12 +34,12 @@ major versions all the time. That's why HTTP Box is still in version 1 (just lik
   - Responses for all content types (JSON, XML, ...)
   - Standard error responses
 
-## Documentation
+## 📚 Documentation
 
 We take documentation seriously. All types, functions, and methods are thoroughly documented,
 with examples and usage scenarios. You can view the documentation at
 [pkg.go.dev/github.com/willpinha/httpbox](https://pkg.go.dev/github.com/willpinha/httpbox)
 
-## License
+## 🏛️ License
 
 This library is under the [MIT license]()
