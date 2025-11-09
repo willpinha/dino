@@ -5,11 +5,13 @@ HTTP Box is a lightweight library that contains utilities compatible with the ne
 If you want to work directly with net/http, without relying on abstractions, but don't want to
 implement common functionalities from scratch, HTTP Box is the right library for you
 
+# Features
+
 HTTP Box provides the following features:
 
 - Handlers and middlewares that return errors
 - Centralized error handling
-- Middlewares for various use cases (logging, rate limit, ...)
+- Middlewares for various use cases (access logging, rate limit, ...)
 - Request utilities:
 	- Body validation
 	- Automatic validation of query and URL parameters
