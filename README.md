@@ -1,8 +1,12 @@
-# httpbox
+<div align="center">
 
-> Lightweight HTTP library compatible with net/http
+# HTTP Box
+
+> 🧰 Lightweight HTTP library compatible with net/http
 
 [Documentation]() ⋅ [License]()
+
+</div>
 
 ## About
 

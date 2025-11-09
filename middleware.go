@@ -1,5 +1,6 @@
 package httpbox
 
+// Middleware is something
 type Middleware func(Handler) Handler
 
 func applyMiddlewares(h Handler, middlewares ...Middleware) Handler {

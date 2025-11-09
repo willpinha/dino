@@ -17,7 +17,7 @@ major versions all the time. That's why HTTP Box is still in version 1 (just lik
 
 # Features
 
-- Handlers and middlewares that return errors
+- Handlers that return errors
 - Centralized error handling
 - Middlewares for various use cases (access logging, rate limit, ...)
 - Request utilities:
