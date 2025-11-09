@@ -36,8 +36,9 @@ major versions all the time. That's why HTTP Box is still in version 1 (just lik
 
 ## Documentation
 
-All the documentation, including more information about the project, its philosophy, and multiple
-usage examples, can be found at [pkg.go.dev/github.com/willpinha/httpbox]()
+We take documentation seriously. All types, functions, and methods are thoroughly documented,
+with examples and usage scenarios. You can view the documentation at
+[pkg.go.dev/github.com/willpinha/httpbox](https://pkg.go.dev/github.com/willpinha/httpbox)
 
 ## License
 
