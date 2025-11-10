@@ -2,7 +2,7 @@
 
 > Lightweight HTTP library compatible with `net/http`
 
-[Documentation](https://pkg.go.dev/github.com/willpinha/httpbox)
+See [Documentation](https://pkg.go.dev/github.com/willpinha/httpbox)
 
 ## About
 
