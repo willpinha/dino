@@ -3,6 +3,7 @@ package httpbox
 import (
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 const LevelAccess = slog.Level(1)
@@ -94,7 +95,11 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 
 			arw := newAccessResponseWriter(w)
 
+			now := time.Now()
+
 			err := h(arw, r)
+
+			resTime := time.Since(now)
 
 			reqAttrs := []any{
 				slog.String("method", r.Method),
@@ -110,6 +115,7 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 			resAttrs := []any{
 				slog.Int("status", arw.statusCode),
 				slog.Int("body_size", arw.bodySize),
+				slog.Duration("time", resTime),
 			}
 			if options.responseAttrsFunc != nil {
 				resAttrs = append(resAttrs, options.responseAttrsFunc(arw)...)
