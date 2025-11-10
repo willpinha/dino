@@ -77,8 +77,7 @@ message, we can also pass the following options:
 	It can be of any type that is serializable to JSON
 - [WithInternalError]: An internal error that caused the error to be returned. This internal error is
 	not serialized in the response, but can be used for logging or debugging purposes
-- [WithLog]: Indicates that this error should be logged. By default, errors are not logged. It must
-	be used in conjunction with the [AccessLogMiddleware] middleware
+- [WithLog]: Indicates that this error should be logged. By default, errors are not logged
 
 # Middlewares
 
