@@ -1,6 +1,6 @@
 # HTTP Box
 
-> 🧰 Lightweight HTTP library compatible with `net/http`
+> Lightweight HTTP library compatible with `net/http`
 
 [Documentation](https://pkg.go.dev/github.com/willpinha/httpbox)
 
