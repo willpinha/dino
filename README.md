@@ -7,9 +7,9 @@ See [Documentation](https://pkg.go.dev/github.com/willpinha/httpbox) to learn mo
 ## About
 
 httpbox is a lightweight library that contains utilities compatible with the `net/http` package.
-If you want to work directly with `net/http`, without relying on abstractions (routers, frameworks,
-...), but don't want to implement common functionalities from scratch, httpbox is the right library
-for you
+If you want to work directly with `net/http` and the standard library, without relying on abstractions
+(third-party routers, frameworks, ...), but don't want to implement common functionalities from scratch,
+httpbox is the right library for you
 
 ## Philosophy
 
