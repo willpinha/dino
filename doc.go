@@ -23,7 +23,8 @@ is used. An example of this is in http.ServeMux:
 	mux.Handle("GET /path", MyHandler())
 
 In fact, http.ServeMux is the ideal multiplexer (router) to use with httpbox. This is because many of
-httpbox's features are built upon the functionalities that http.ServeMux provides
+httpbox's features are built upon the functionalities that http.ServeMux provides. Besides, it's part
+of the standard library
 
 # Error handling
 
@@ -50,7 +51,7 @@ This response contains the following fields:
 
 - `code` (required): The status code of the response
 - `message` (required): A descriptive message about the error
-- `details` (optional): Additional information about the error (any type)
+- `details` (optional): Additional information about the error (any serializable type)
 
 When we return an error that is not of type [Error], httpbox generates a generic internal server
 error response with status code 500. This prevents unhandled errors from being sent in the response,
@@ -80,6 +81,10 @@ message, we can also pass the following options:
 	be used in conjunction with the [AccessLogMiddleware] middleware
 
 # Middlewares
+
+## RecoverMiddleware
+
+## AccessLogMiddleware
 
 # Request utilities
 
