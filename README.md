@@ -2,6 +2,8 @@
 
 > 🧰 Lightweight HTTP library compatible with `net/http`
 
+[Documentation](https://pkg.go.dev/github.com/willpinha/httpbox)
+
 ## About
 
 HTTP Box is a lightweight library that contains utilities compatible with the `net/http` package.
