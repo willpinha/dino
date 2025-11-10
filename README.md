@@ -17,7 +17,7 @@ httpbox doesn't try to be the magic solution that solves all your problems. Inst
 thin layer built on top of `net/http` for functionalities commonly needed when building applications
 
 It also follows the Go philosophy, which is to maintain simplicity and not apply breaking changes or
-major versions all the time. That's why httpbox is still in version 1 (just like Go)
+major versions all the time
 
 ## Features
 
