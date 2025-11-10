@@ -1,5 +1,3 @@
-package httpbox
-
 /*
 # Handlers
 
@@ -61,23 +59,23 @@ returned by a handler are of type [Error]
 We use [NewError] to create new errors of type [Error]. In addition to passing the status code and
 message, we can also pass the following options:
 
-	func MyHandler() httpbox.Handler {
-		return func(w http.ResponseWriter, r *http.Request) error {
-			return httpbox.NewError(
-				http.StatusNotFound,
-				"resource not found",
-				httpbox.WithDetails("Some additional details"),
-				httpbox.WithInternalError(errors.New("database: record not found")
-				httpbox.WithLog(),
-			)
+		func MyHandler() httpbox.Handler {
+			return func(w http.ResponseWriter, r *http.Request) error {
+				return httpbox.NewError(
+					http.StatusNotFound,
+					"resource not found",
+					httpbox.WithDetails("Some additional details"),
+					httpbox.WithInternalError(errors.New("database: record not found")
+					httpbox.WithLog(),
+				)
+			}
 		}
-	}
 
-- [WithDetails]: Additional details. Ideal for when the message is insufficient to describe the error.
-	It can be of any type that is serializable to JSON
-- [WithInternalError]: An internal error that caused the error to be returned. This internal error is
-	not serialized in the response, but can be used for logging or debugging purposes
-- [WithLog]: Indicates that this error should be logged. By default, errors are not logged
+	  - [WithDetails]: Additional details. Ideal for when the message is insufficient to describe the error.
+	    It can be of any type that is serializable to JSON
+	  - [WithInternalError]: An internal error that caused the error to be returned. This internal error is
+	    not serialized in the response, but can be used for logging or debugging purposes
+	  - [WithLog]: Indicates that this error should be logged. By default, errors are not logged
 
 # Middlewares
 
@@ -91,3 +89,4 @@ message, we can also pass the following options:
 
 # Logging
 */
+package httpbox
