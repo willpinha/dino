@@ -4,9 +4,12 @@ you will see how to obtain and validate the data from each of these sources
 
 ## Reading the URL (path & query parameters)
 
-The [`dino.Param`]() type represents parameters that come from the URL path or query string. It
-contains validations that you can use to convert the data received from the request into a specific
-type in Go. To obtain these parameters, we can use 4 different functions:
+The [`dino.Param`](https://pkg.go.dev/github.com/willpinha/dino#Param) type represents parameters
+that come from the URL path (e.g. `/users/{id}`) or query string (e.g. `?name=will`).
+
+### Path parameters
+
+### Query parameters
 
 ```go
 func MyHandler() dino.Handler {
@@ -23,12 +26,12 @@ func MyHandler() dino.Handler {
 }
 ```
 
-| Function                    | Description |
-| --------------------------- | ----------- |
-| [`NewPathParam`]()          |             |
-| [`NewQueryParam`]()         |             |
-| [`NewDefaultQueryParam`]()  |             |
-| [`NewRequiredQueryParam`]() |             |
+| Function                                                                                      | Description |
+| --------------------------------------------------------------------------------------------- | ----------- |
+| [`NewPathParam`](https://pkg.go.dev/github.com/willpinha/dino#NewPathParam)                   |             |
+| [`NewQueryParam`](https://pkg.go.dev/github.com/willpinha/dino#NewQueryParam)                 |             |
+| [`NewDefaultQueryParam`](https://pkg.go.dev/github.com/willpinha/dino#NewDefaultQueryParam)   |             |
+| [`NewRequiredQueryParam`](https://pkg.go.dev/github.com/willpinha/dino#NewRequiredQueryParam) |             |
 
 ## Reading the body
 
