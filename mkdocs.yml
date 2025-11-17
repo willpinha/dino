@@ -16,8 +16,9 @@ theme:
     - navigation.path
     - navigation.top
     - navigation.sections
+    - navigation.footer
 nav:
-  - Introduction: /
+  - Introduction: index.md
   - net/http Cheat sheet: cheat-sheet.md
   - The basics:
     - Handlers & Routing: the-basics/handlers-routing.md
@@ -30,7 +31,7 @@ nav:
     - RecoverMiddleware: middlewares/recover.md
     - AccessLogMiddleware: middlewares/access-log.md
   - Guides:
-    - Monitoring with Grafana & Prometheus: guides/monitoring-grafana-prometheus.md
+    - Monitoring with Grafana: guides/monitoring-with-grafana.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true

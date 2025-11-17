@@ -20,9 +20,9 @@ func UnknownErrorHandler() dino.Handler {
 ```
 
 When we return an error of type `dino.Error`, it is automatically serialized to a JSON object in the
-response body. This standardizes the response format for all errors that your application may return
+response body. This standardizes the response format for all errors that your application returns
 
-This JSON object contains the following fields:
+This error response contains the following fields:
 
 | Field     | Required? | Description                                                         |
 | --------- | --------- | ------------------------------------------------------------------- |
