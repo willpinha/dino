@@ -20,7 +20,7 @@ theme:
     - navigation.sections
     - navigation.footer
 nav:
-  - Introduction & Installation: index.md
+  - index.md
   - The basics:
     - the-basics/handlers-routing.md
     - the-basics/error-handling.md
