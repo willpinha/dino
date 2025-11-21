@@ -141,7 +141,8 @@ them in a common package, separating them into files within that package
     	return dino.NewError(
     		http.StatusForbidden,
     		fmt.Sprintf("User %s is blocked", username),
-    		dino.WithDetails("Please, contact the HR for more information")
+    		dino.WithDetails("Please, contact the HR for more information"),
+    		dino.WithLog(),
     	)
     }
     ```
