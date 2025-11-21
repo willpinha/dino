@@ -122,7 +122,7 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 			}
 			resGroup := slog.Group("res", resAttrs...)
 
-			options.logger.Log(r.Context(), options.level, "Access log", reqGroup, resGroup)
+			options.logger.Log(r.Context(), options.level, "Access", reqGroup, resGroup)
 
 			return err
 		}

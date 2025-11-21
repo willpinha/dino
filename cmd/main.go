@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
-	"os"
 
 	"github.com/willpinha/httpbox"
 )
@@ -28,9 +26,6 @@ func HelloHandler() httpbox.Handler {
 }
 
 func main() {
-	slog.SetDefault(
-		slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{})),
-	)
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /hello/{name}", HelloHandler())
