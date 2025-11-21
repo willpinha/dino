@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Dino" width="150" src="https://raw.githubusercontent.com/willpinha/dino/refs/heads/master/logo.svg" />
+<img alt="Dino" width="120" src="https://raw.githubusercontent.com/willpinha/dino/refs/heads/master/logo.svg" />
 
 # Dino
 
