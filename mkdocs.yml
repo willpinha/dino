@@ -23,6 +23,7 @@ nav:
   - The basics:
     - Handlers & Routing: the-basics/handlers-routing.md
     - Error handling: the-basics/error-handling.md
+    - Middlewares: the-basics/middlewares.md
     - Requests: the-basics/requests.md
     - Responses: the-basics/responses.md
     - Logging: the-basics/logging.md

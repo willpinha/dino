@@ -14,7 +14,7 @@ We also provide some applications made with Dino so you can get inspired!
 !!! note
 
     This documentation assumes you already have some experience with `net/http`. If you don't have it,
-    check the `net/http` [cheat sheet](cheat-sheet) for a better understanding and context
+    check the `net/http` [cheat sheet](cheat-sheet.md) for a better understanding and context
 
 ## Philosophy
 
