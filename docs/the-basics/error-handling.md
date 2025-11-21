@@ -54,7 +54,7 @@ passing the status code and message, we can also pass any
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`dino.WithDetails`]()       | Additional details. Ideal for when the message is insufficient to describe the error. It can be of any type that is serializable to JSON                         |
 | [`dino.WithInternalError`]() | An internal error that caused the error to be returned. This internal error is not serialized in the response, but can be used for logging or debugging purposes |
-| [`dino.WithLog`]()           | Indicates that this error should be logged. By default, errors are not logged                                                                                    |
+| [`dino.WithoutLog`]()        | Indicates that this error should not be logged. By default, all errors are logged                                                                                |
 
 ## Organizing errors in your project
 
@@ -128,7 +128,11 @@ them in a common package, separating them into files within that package
     }
 
     func BadRequest() dino.Error {
-    	return dino.NewError(http.StatusBadRequest, "There is something wrong with your request")
+    	return dino.NewError(
+    		http.StatusBadRequest,
+    		"There is something wrong with your request",
+    		dino.WithoutLog(),
+    	)
     }
     ```
 
@@ -142,7 +146,6 @@ them in a common package, separating them into files within that package
     		http.StatusForbidden,
     		fmt.Sprintf("User %s is blocked", username),
     		dino.WithDetails("Please, contact the HR for more information"),
-    		dino.WithLog(),
     	)
     }
     ```

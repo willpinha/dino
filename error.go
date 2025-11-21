@@ -18,7 +18,7 @@ func NewError(code int, message string, opts ...ErrorOption) *Error {
 	err := &Error{
 		Code:    code,
 		Message: message,
-		Log:     false,
+		Log:     true,
 	}
 
 	for _, opt := range opts {
@@ -40,8 +40,8 @@ func WithInternalError(internalErr error) ErrorOption {
 	}
 }
 
-func WithLog() ErrorOption {
+func WithoutLog() ErrorOption {
 	return func(err *Error) {
-		err.Log = true
+		err.Log = false
 	}
 }

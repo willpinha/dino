@@ -25,7 +25,6 @@ func handleError(w http.ResponseWriter, err error) {
 	if !errors.As(err, &httpErr) {
 		httpErr = NewError(http.StatusInternalServerError, "Unknown error occurred",
 			WithInternalError(err),
-			WithLog(),
 		)
 	}
 

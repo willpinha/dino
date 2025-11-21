@@ -50,13 +50,13 @@ func TestNewError_WithInternalError(t *testing.T) {
 	assert.Equal(t, "connection timeout", err.Err.Error())
 }
 
-func TestNewError_WithLog(t *testing.T) {
+func TestNewError_WithoutLog(t *testing.T) {
 	code := http.StatusInternalServerError
 	message := "critical error"
 
-	err := NewError(code, message, WithLog())
+	err := NewError(code, message, WithoutLog())
 
-	assert.True(t, err.Log)
+	assert.False(t, err.Log)
 }
 
 func TestNewError_WithAllOptions(t *testing.T) {
@@ -70,14 +70,14 @@ func TestNewError_WithAllOptions(t *testing.T) {
 		message,
 		WithDetails(details),
 		WithInternalError(internalErr),
-		WithLog(),
+		WithoutLog(),
 	)
 
 	assert.Equal(t, code, err.Code)
 	assert.Equal(t, message, err.Message)
 	assert.Equal(t, details, err.Details)
 	assert.Equal(t, internalErr, err.Err)
-	assert.True(t, err.Log)
+	assert.False(t, err.Log)
 }
 
 func TestError_MultipleOptionsOrder(t *testing.T) {
