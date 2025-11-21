@@ -6,3 +6,11 @@
 [About]() • [Philosophy]() • [Documentation]() • [License]()
 
 </div>
+
+# About
+
+# Philosophy
+
+# Documentation
+
+# License
