@@ -18,8 +18,7 @@ theme:
     - navigation.sections
     - navigation.footer
 nav:
-  - Introduction: index.md
-  - net/http Cheat sheet: cheat-sheet.md
+  - Introduction & Installation: index.md
   - The basics:
     - Handlers & Routing: the-basics/handlers-routing.md
     - Error handling: the-basics/error-handling.md
@@ -28,6 +27,8 @@ nav:
     - Responses: the-basics/responses.md
     - Logging: the-basics/logging.md
     - Testing: the-basics/testing.md
+  - Cheat sheet:
+    - net/http: cheat-sheet/net-http.md
   - Middlewares:
     - RecoverMiddleware: middlewares/recover.md
     - AccessLogMiddleware: middlewares/access-log.md

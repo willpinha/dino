@@ -1,4 +1,4 @@
-# Introduction
+# Introduction & Installation
 
 **Dino** is a lightweight HTTP library that contains utilities compatible with the `net/http` package.
 If you want to work directly with `net/http` and the standard library, without relying on abstractions
@@ -14,7 +14,7 @@ We also provide some applications made with Dino so you can get inspired!
 !!! note
 
     This documentation assumes you already have some experience with `net/http`. If you don't have it,
-    check the `net/http` [cheat sheet](cheat-sheet.md) for a better understanding and context
+    check the `net/http` [cheat sheet](cheat-sheet/net-http.md) for a better understanding and context
 
 ## Philosophy
 
