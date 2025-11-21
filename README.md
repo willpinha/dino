@@ -7,10 +7,10 @@
 
 </div>
 
-# About
+## About
 
-# Philosophy
+## Philosophy
 
-# Documentation
+## Documentation
 
-# License
+## License
