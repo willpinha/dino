@@ -1,3 +1,5 @@
+# Error handling
+
 Dino has a centralized error handling logic. Errors returned by the handlers are automatically
 processed, which greatly simplifies error handling
 

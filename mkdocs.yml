@@ -2,6 +2,8 @@ site_name: Dino's documentation
 site_url: https://willpinha.github.io/dino
 repo_url: https://github.com/willpinha/dino
 repo_name: willpinha/dino
+plugins: 
+  - typeset 
 theme:
   name: material
   icon:
@@ -20,25 +22,33 @@ theme:
 nav:
   - Introduction & Installation: index.md
   - The basics:
-    - Handlers & Routing: the-basics/handlers-routing.md
-    - Error handling: the-basics/error-handling.md
-    - Middlewares: the-basics/middlewares.md
-    - Requests: the-basics/requests.md
-    - Responses: the-basics/responses.md
-    - Logging: the-basics/logging.md
-    - Testing: the-basics/testing.md
+    - the-basics/handlers-routing.md
+    - the-basics/error-handling.md
+    - the-basics/middlewares.md
+    - the-basics/requests.md
+    - the-basics/responses.md
+    - the-basics/logging.md
+    - the-basics/testing.md
   - Cheat sheet:
-    - net/http: cheat-sheet/net-http.md
+    - cheat-sheet/net-http.md
+  - Database:
+    - database/getting-started.md
+    - database/relational.md
+    - database/document-based.md
   - Middlewares:
-    - RecoverMiddleware: middlewares/recover.md
-    - AccessLogMiddleware: middlewares/access-log.md
+    - middlewares/recover.md
+    - middlewares/access-log.md
   - Guides:
-    - Monitoring with Grafana: guides/monitoring-with-grafana.md
+    - guides/monitoring-with-grafana.md
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences

@@ -1,3 +1,5 @@
+# Handlers & Routing
+
 ## Handlers
 
 Handlers (a.k.a. Controllers) represents the core mechanism for processing HTTP requests and

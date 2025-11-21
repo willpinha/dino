@@ -1,3 +1,5 @@
+# Requests
+
 Dino provides several utilities to help you easily extract and validate data from your requests.
 This request data can come from the URL (path & query parameters), the body, or the headers. Below
 you will see how to obtain and validate the data from each of these sources
