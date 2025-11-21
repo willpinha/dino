@@ -55,3 +55,93 @@ passing the status code and message, we can also pass any
 | [`dino.WithDetails`]()       | Additional details. Ideal for when the message is insufficient to describe the error. It can be of any type that is serializable to JSON                         |
 | [`dino.WithInternalError`]() | An internal error that caused the error to be returned. This internal error is not serialized in the response, but can be used for logging or debugging purposes |
 | [`dino.WithLog`]()           | Indicates that this error should be logged. By default, errors are not logged                                                                                    |
+
+## Organizing errors in your project
+
+Here we define some examples of best practices for you to organize the different types of errors in
+your project. Note that these examples are not mandatory; you can come up with your own solutions and
+patterns if they make sense for your project
+
+### Functions that return `dino.Error`
+
+You can create functions that return `dino.Error` to standardize the response format for a particular
+type of error
+
+!!! example
+
+    We define a generic `NotFound` function, which is used whenever a resource on your server could
+    not be found
+
+    ```go
+    func NotFound() dino.Error {
+    	return dino.NewError(http.StatusNotFound, "Resource not found")
+    }
+    ```
+
+    We can also pass an integer as a parameter, representing the ID of the resource that was not found
+
+    ```go
+    func IdentifierNotFound(id int) dino.Error {
+    	return dino.NewError(http.StatusNotFound, fmt.Sprintf("ID %d not found", id))
+    }
+    ```
+
+    We can then call this function in our handlers, instead of directly calling `dino.NewError`
+
+    ```go
+    func GetUserHandler() dino.Handler {
+    	return func(w http.ResponseWriter, r *http.Request) error {
+    		userID := 123
+
+    		return IdentifierNotFound(userID)
+    	}
+    }
+    ```
+
+### Grouping error functions into a single package
+
+Your project may have multiple functions that return `dino.Error`. To organize them, you can define
+them in a common package, separating them into files within that package
+
+!!! example
+
+    Let's say we have a separate directory structure divided into `cmd`, `internal`, and `pkg`. Inside
+    `internal`, we have a `errors` package where we will store all the errors from our project
+
+    ```
+    .
+    ├── cmd
+    ├── internal
+    │   └── errors
+    │       ├── http.go
+    │       └── users.go
+    └── pkg
+    ```
+
+    The `http.go` file will have generic HTTP errors (not found, bad request, etc.)
+
+    ```go title="http.go"
+    package errors
+
+    func NotFound() dino.Error {
+    	return dino.NewError(http.StatusNotFound, "Resource not found")
+    }
+
+    func BadRequest() dino.Error {
+    	return dino.NewError(http.StatusBadRequest, "There is something wrong with your request")
+    }
+    ```
+
+    And the `users.go` file will have errors specifically related to users
+
+    ```go title="users.go"
+    package errors
+
+    func UserIsBlocked(username string) dino.Error {
+    	return dino.NewError(
+    		http.StatusForbidden,
+    		fmt.Sprintf("User %s is blocked", username),
+    		dino.WithDetails("Please, contact the HR for more information")
+    	)
+    }
+    ```
