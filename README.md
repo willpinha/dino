@@ -23,4 +23,12 @@ It also follows the Go philosophy, which is to maintain simplicity and not apply
 
 ## Documentation
 
+### Installation
+
+Want to try Dino? Go get the package below and start reading the next sections of this documentation
+
+```
+go get github.com/willpinha/dino
+```
+
 ## License
