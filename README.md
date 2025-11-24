@@ -17,6 +17,10 @@ If you want to work directly with `net/http` and the standard library, without r
 
 ## Philosophy
 
+Dino doesn't try to be the magic solution that solves all your problems. Instead, it provides a thin layer built on top of `net/http` for functionalities commonly needed when building applications
+
+It also follows the Go philosophy, which is to maintain simplicity and not apply breaking changes or major versions all the time. This makes Dino an easy-to-use and stable library in the long term
+
 ## Documentation
 
 ## License
