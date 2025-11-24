@@ -21,14 +21,16 @@ Dino doesn't try to be the magic solution that solves all your problems. Instead
 
 It also follows the Go philosophy, which is to maintain simplicity and not apply breaking changes or major versions all the time. This makes Dino an easy-to-use and stable library in the long term
 
-## Documentation
+## Installation
 
-### Installation
-
-Want to try Dino? Go get the package below and start reading the next sections of this documentation
+Want to try Dino? Go get the package below and start reading the next sections of the documentation
 
 ```
 go get github.com/willpinha/dino
 ```
 
+## Documentation
+
 ## License
+
+Dino is under the [MIT license](LICENSE)
