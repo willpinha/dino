@@ -35,7 +35,7 @@ go get github.com/willpinha/dino
 
 Handlers (a.k.a. Controllers) represents the core mechanism for processing HTTP requests and returning HTTP responses to the clients
 
-Similar to the [http.HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc) type of `net/http`, a handler in Dino is a function, with the difference that this function returns an error. See below for an example of a handler:
+Similar to the [`http.HandlerFunc`](https://pkg.go.dev/net/http#HandlerFunc) type of `net/http`, a handler in Dino is a function, with the difference that this function returns an error. See below for an example of a handler:
 
 ```go
 func MyHandler() dino.Handler {
