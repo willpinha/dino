@@ -31,6 +31,14 @@ go get github.com/willpinha/dino
 
 ## 🦖 Documentation
 
+1. [Handlers]()
+2. [Routing]()
+3. [Error handling]()
+4. [Middlewares]()
+5. [Requests]()
+6. [Responses]()
+7. [Logging]()
+
 ### 1. Handlers
 
 Handlers (a.k.a. Controllers) represents the core mechanism for processing HTTP requests and returning HTTP responses to the clients
