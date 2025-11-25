@@ -119,10 +119,8 @@ message, we can also pass any [`dino.ErrorOption`](https://pkg.go.dev/github.com
 
 |Option|Description|
 |---|---|
-|[`dino.WithDetails`](https://pkg.go.dev/github.com/willpinha/dino#WithDetails)|Additional details. Ideal for when the message is insufficient to describe the error. It can be of any type that is serializable to JSON
-|
-|[`dino.WithInternalError`](https://pkg.go.dev/github.com/willpinha/dino#WithInternalError)|An internal error that caused the error to be returned. This internal error is not serialized in the response, but can be used for logging or debugging purposes
-|
+|[`dino.WithDetails`](https://pkg.go.dev/github.com/willpinha/dino#WithDetails)|Additional details. Ideal for when the message is insufficient to describe the error. It can be of any type that is serializable to JSON|
+|[`dino.WithInternalError`](https://pkg.go.dev/github.com/willpinha/dino#WithInternalError)|An internal error that caused the error to be returned. This internal error is not serialized in the response, but can be used for logging or debugging purposes|
 |[`dino.WithoutLog`](https://pkg.go.dev/github.com/willpinha/dino#WithoutLog)|Indicates that this error should not be logged. By default, all errors are logged|
 
 #### Organizing errors in your project
