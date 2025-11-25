@@ -128,7 +128,7 @@ message, we can also pass any [`dino.ErrorOption`](https://pkg.go.dev/github.com
 Here we define some examples of best practices for you to organize the different types of errors in your project. Note that
 these examples are not mandatory; you can come up with your own solutions and patterns if they make sense for your project
 
-##### Functions that return `dino.Error`
+##### 1) Functions that return `dino.Error`
 
 You can create functions that return `dino.Error` to standardize the response format for a particular type of error
 
@@ -157,6 +157,58 @@ func GetUserHandler() dino.Handler {
 
         return IdentifierNotFound(userID)
     }
+}
+```
+
+##### 2) Grouping error functions into a single package
+
+Your project may have multiple functions that return `dino.Error`. To organize them, you can define them in a common package,
+separating them into files within that package
+
+Let's say we have a separate directory structure divided into cmd, internal, and pkg. Inside internal, we have a errors package where we
+will store all the errors from our project
+
+```
+.
+├── cmd
+├── internal
+│   └── errors
+│       ├── http.go
+│       └── users.go
+└── pkg
+```
+
+The `http.go` file will have generic HTTP errors (not found, bad request, etc.)
+
+```go
+// http.go
+package errors
+
+func NotFound() dino.Error {
+    return dino.NewError(http.StatusNotFound, "Resource not found")
+}
+
+func BadRequest() dino.Error {
+    return dino.NewError(
+        http.StatusBadRequest,
+        "There is something wrong with your request",
+        dino.WithoutLog(),
+    )
+}
+```
+
+And the `users.go` file will have errors specifically related to users
+
+```go
+// user.go
+package errors
+
+func UserIsBlocked(username string) dino.Error {
+    return dino.NewError(
+        http.StatusForbidden,
+        fmt.Sprintf("User %s is blocked", username),
+        dino.WithDetails("Please, contact the HR for more information"),
+    )
 }
 ```
 
