@@ -90,6 +90,78 @@ func UnknownErrorHandler() dino.Handler {
 }
 ```
 
+#### Response format
+
+When we return an error of type `dino.Error`, it is automatically serialized to a JSON object in the response body. This standardizes the
+response format for all errors that your application returns
+
+This error response contains the following fields:
+
+|Field|Required?|Description|
+|---|---|---|
+|`code`|Yes|The status code of the response|
+|`message`|Yes|A descriptive message about the error|
+|`details`|No|Additional information about the error (any JSON serializable type)|
+
+When we return an error that is not of type `dino.Error`, Dino generates a generic internal server error response with status code 500.
+This prevents unhandled errors from being sent in the response, which could lead to leaks of sensitive data (e.g. database information)
+
+> [!TIP]
+> Ideally, all errors returned by a handler are of type `dino.Error`
+> 
+> This will force you to validate all types of errors that may occur in your handler, which results in greater control and transparency
+> regarding errors and data that are returned to clients
+
+#### Creating instances of `dino.Error`
+
+The correct way to create new instances of dino.Error is through the `dino.NewError` function. In addition to passing the status code and
+message, we can also pass any [`dino.ErrorOption`](https://pkg.go.dev/github.com/willpinha/dino#ErrorOption):
+
+|Option|Description|
+|---|---|
+|[`dino.WithDetails`](https://pkg.go.dev/github.com/willpinha/dino#WithDetails)|Additional details. Ideal for when the message is insufficient to describe the error. It can be of any type that is serializable to JSON
+|
+|[`dino.WithInternalError`](https://pkg.go.dev/github.com/willpinha/dino#WithInternalError)|An internal error that caused the error to be returned. This internal error is not serialized in the response, but can be used for logging or debugging purposes
+|
+|[`dino.WithoutLog`](https://pkg.go.dev/github.com/willpinha/dino#WithoutLog)|Indicates that this error should not be logged. By default, all errors are logged|
+
+#### Organizing errors in your project
+
+Here we define some examples of best practices for you to organize the different types of errors in your project. Note that
+these examples are not mandatory; you can come up with your own solutions and patterns if they make sense for your project
+
+##### Functions that return `dino.Error`
+
+You can create functions that return `dino.Error` to standardize the response format for a particular type of error
+
+We define a generic `NotFound` function, which is used whenever a resource on your server could not be found
+
+```go
+func NotFound() dino.Error {
+    return dino.NewError(http.StatusNotFound, "Resource not found")
+}
+```
+
+We can also pass an integer as a parameter, representing the ID of the resource that was not found
+
+```go
+func IdentifierNotFound(id int) dino.Error {
+    return dino.NewError(http.StatusNotFound, fmt.Sprintf("ID %d not found", id))
+}
+```
+
+We can then call this function in our handlers, instead of directly calling `dino.NewError`
+
+```go
+func GetUserHandler() dino.Handler {
+    return func(w http.ResponseWriter, r *http.Request) error {
+        userID := 123
+
+        return IdentifierNotFound(userID)
+    }
+}
+```
+
 ## 🦖 License
 
 Dino is under the [MIT license](LICENSE)
