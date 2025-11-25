@@ -31,7 +31,7 @@ go get github.com/willpinha/dino
 
 ## 🦖 Documentation
 
-### Handlers
+### 1. Handlers
 
 Handlers (a.k.a. Controllers) represents the core mechanism for processing HTTP requests and returning HTTP responses to the clients
 
@@ -48,7 +48,7 @@ func MyHandler() dino.Handler {
 
 Defining a custom handler that returns an error is a very common pattern because it simplifies error handling, as we will see in the following sections. This pattern is used, for example, on [Fiber](https://gofiber.io/) and [Echo](https://echo.labstack.com/) handlers
 
-### Routing
+### 2. Routing
 
 Dino's handlers implement the [`http.Handler`](https://pkg.go.dev/net/http#Handler) interface, and therefore can be used anywhere that interface is used. An example of this is in [`http.ServeMux`](https://pkg.go.dev/net/http#ServeMux):
 
@@ -61,6 +61,26 @@ mux.Handle("POST /another/path", AnotherHandler())
 
 In fact, `http.ServeMux` is the ideal multiplexer (router) to use with Dino. This is because many of Dino's features are built upon the functionalities that `http.ServeMux` provides. Besides, it's part of the standard library and therefore a very stable router
 
+### 3. Error handling
+
+Dino has a centralized error handling logic. Errors returned by the handlers are automatically processed, which greatly simplifies error handling
+
+There are two possibilities for returning an error in a handler: an error of type [`dino.Error`](https://pkg.go.dev/github.com/willpinha/dino#Error),
+or any other error that is not of that type. Below are two examples of handlers that demonstrate these two possibilities:
+
+```go
+func KnownErrorHandler() dino.Handler {
+    return func(w http.ResponseWriter, r *http.Request) error {
+        return dino.NewError(http.StatusBadRequest, "invalid input")
+    }
+}
+
+func UnknownErrorHandler() dino.Handler {
+    return func(w http.ResponseWriter, r *http.Request) error {
+        return errors.New("database error")
+    }
+}
+```
 
 ## 🦖 License
 
