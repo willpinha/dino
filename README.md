@@ -71,6 +71,10 @@ In fact, `http.ServeMux` is the ideal multiplexer (router) to use with Dino. Thi
 
 ### 3. Error handling
 
+- [Response format]()
+- [Creating instances of `dino.Error`]()
+- [Organizing errors in your project]()
+
 Dino has a centralized error handling logic. Errors returned by the handlers are automatically processed, which greatly simplifies error handling
 
 There are two possibilities for returning an error in a handler: an error of type [`dino.Error`](https://pkg.go.dev/github.com/willpinha/dino#Error),
