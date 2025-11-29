@@ -21,6 +21,7 @@ It also follows the Go philosophy, which is to maintain simplicity and not apply
 
 ## 🦖 Documentation
 
+Want to learn more about Dino and see if it makes sense for your project? Take a look at the [Documentation](https://github.com/willpinha/dino/wiki)
 
 ## 🦖 License
 
