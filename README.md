@@ -5,8 +5,6 @@
 
 🦖 Lightweight HTTP library compatible with `net/http`
 
-[About](#-about) • [Philosophy](#-philosophy) • [Documentation](#-documentation) • [License](#-license)
-
 </div>
 
 ## 🦖 About
