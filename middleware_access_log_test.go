@@ -98,7 +98,7 @@ func TestAccessLogMiddleware_DefaultOptions(t *testing.T) {
 
 	// Verify request attributes
 	assert.Equal(t, "GET", record.attrs["req.method"])
-	assert.Equal(t, "/test?foo=bar", record.attrs["req.url"])
+	assert.Equal(t, "", record.attrs["req.endpoint"])
 	assert.Equal(t, "192.168.1.1:1234", record.attrs["req.remote_addr"])
 
 	// Verify response attributes
@@ -426,7 +426,7 @@ func TestAccessLogMiddleware_WithRequestAttrs(t *testing.T) {
 
 	// Verify default request attributes are still present
 	assert.Equal(t, "GET", record.attrs["req.method"])
-	assert.Equal(t, "/test", record.attrs["req.url"])
+	assert.Equal(t, "", record.attrs["req.endpoint"])
 
 	// Verify custom attributes were added
 	assert.Equal(t, "TestAgent/1.0", record.attrs["req.user_agent"])

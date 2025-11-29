@@ -19,7 +19,7 @@ func TestNewError_BasicCreation(t *testing.T) {
 	assert.Equal(t, message, err.Message)
 	assert.Nil(t, err.Details)
 	assert.Nil(t, err.Err)
-	assert.False(t, err.Log)
+	assert.True(t, err.Log)
 }
 
 func TestNewError_WithDetails(t *testing.T) {

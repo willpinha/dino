@@ -21,7 +21,7 @@ func HelloHandler() httpbox.Handler {
 
 		msg := fmt.Sprintf("Hello, %s!", name)
 
-		return httpbox.WriteBytes(w, http.StatusOK, "text/plain", []byte(msg))
+		return httpbox.WriteJSON(w, 200, msg)
 	}
 }
 
