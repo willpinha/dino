@@ -1,4 +1,4 @@
-package httpbox
+package dino
 
 type Error struct {
 	Code    int    `json:"code"`

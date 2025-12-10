@@ -1,4 +1,4 @@
-package httpbox_test
+package dino_test
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/willpinha/httpbox"
+	"github.com/willpinha/dino"
 )
 
 // mockLogHandler captures log records for testing
@@ -74,7 +74,7 @@ func TestAccessLogMiddleware_DefaultOptions(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusOK)
@@ -93,7 +93,7 @@ func TestAccessLogMiddleware_DefaultOptions(t *testing.T) {
 
 	record := mockHandler.records[0]
 
-	assert.Equal(t, httpbox.LevelAccess, record.level)
+	assert.Equal(t, dino.LevelAccess, record.level)
 	assert.Equal(t, "Access", record.message)
 
 	// Verify request attributes
@@ -110,9 +110,9 @@ func TestAccessLogMiddleware_WithCustomLevel(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessLevel(slog.LevelInfo),
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessLevel(slog.LevelInfo),
 	)
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
@@ -134,9 +134,9 @@ func TestAccessLogMiddleware_WithSkipFunc(t *testing.T) {
 	logger := slog.New(mockHandler)
 
 	// Skip health check requests
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessSkipFunc(func(r *http.Request) bool {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessSkipFunc(func(r *http.Request) bool {
 			return r.URL.Path == "/health"
 		}),
 	)
@@ -166,9 +166,9 @@ func TestAccessLogMiddleware_WithSkipFunc_MultipleConditions(t *testing.T) {
 	logger := slog.New(mockHandler)
 
 	// Skip health check and metrics endpoints
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessSkipFunc(func(r *http.Request) bool {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessSkipFunc(func(r *http.Request) bool {
 			return r.URL.Path == "/health" || r.URL.Path == "/metrics"
 		}),
 	)
@@ -198,7 +198,7 @@ func TestAccessLogMiddleware_CustomStatusCode(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusNotFound)
@@ -222,7 +222,7 @@ func TestAccessLogMiddleware_ErrorPropagation(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 	expectedErr := errors.New("handler error")
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
@@ -244,7 +244,7 @@ func TestAccessLogMiddleware_NoWriteHeader(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 	// Handler that doesn't call WriteHeader explicitly
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
@@ -267,7 +267,7 @@ func TestAccessLogMiddleware_MultipleWrites(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
 		w.Write([]byte("Hello"))
@@ -301,7 +301,7 @@ func TestAccessLogMiddleware_DifferentMethods(t *testing.T) {
 			mockHandler := &mockLogHandler{}
 			logger := slog.New(mockHandler)
 
-			middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+			middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 			handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
 				return nil
@@ -322,7 +322,7 @@ func TestAccessLogMiddleware_EmptyResponse(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(httpbox.WithAccessLogger(logger))
+	middleware := dino.AccessLogMiddleware(dino.WithAccessLogger(logger))
 
 	// Handler that writes nothing
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
@@ -346,10 +346,10 @@ func TestAccessLogMiddleware_CombinedOptions(t *testing.T) {
 	logger := slog.New(mockHandler)
 
 	// Test combining multiple options
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessLevel(slog.LevelWarn),
-		httpbox.WithAccessSkipFunc(func(r *http.Request) bool {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessLevel(slog.LevelWarn),
+		dino.WithAccessSkipFunc(func(r *http.Request) bool {
 			return r.URL.Path == "/internal"
 		}),
 	)
@@ -375,7 +375,7 @@ func TestAccessLogMiddleware_CombinedOptions(t *testing.T) {
 
 func TestAccessLogMiddleware_NoOptions(t *testing.T) {
 	// Test that middleware works without any options (uses defaults)
-	middleware := httpbox.AccessLogMiddleware()
+	middleware := dino.AccessLogMiddleware()
 
 	handler := middleware(func(w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusOK)
@@ -397,9 +397,9 @@ func TestAccessLogMiddleware_WithRequestAttrs(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessRequestAttrs(func(r *http.Request) []any {
 			return []any{
 				slog.String("user_agent", r.UserAgent()),
 				slog.String("host", r.Host),
@@ -437,9 +437,9 @@ func TestAccessLogMiddleware_WithResponseAttrs(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
 			return []any{
 				slog.String("custom_field", "custom_value"),
 				slog.Bool("success", true),
@@ -476,14 +476,14 @@ func TestAccessLogMiddleware_WithBothCustomAttrs(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessRequestAttrs(func(r *http.Request) []any {
 			return []any{
 				slog.String("request_id", r.Header.Get("X-Request-ID")),
 			}
 		}),
-		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+		dino.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
 			return []any{
 				slog.String("trace_id", "abc123"),
 			}
@@ -523,12 +523,12 @@ func TestAccessLogMiddleware_WithEmptyCustomAttrs(t *testing.T) {
 	logger := slog.New(mockHandler)
 
 	// Test with functions that return empty slices
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessRequestAttrs(func(r *http.Request) []any {
 			return []any{}
 		}),
-		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+		dino.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
 			return []any{}
 		}),
 	)
@@ -557,16 +557,16 @@ func TestAccessLogMiddleware_WithMultipleCustomAttrs(t *testing.T) {
 	mockHandler := &mockLogHandler{}
 	logger := slog.New(mockHandler)
 
-	middleware := httpbox.AccessLogMiddleware(
-		httpbox.WithAccessLogger(logger),
-		httpbox.WithAccessRequestAttrs(func(r *http.Request) []any {
+	middleware := dino.AccessLogMiddleware(
+		dino.WithAccessLogger(logger),
+		dino.WithAccessRequestAttrs(func(r *http.Request) []any {
 			return []any{
 				slog.String("user_agent", r.UserAgent()),
 				slog.String("referer", r.Referer()),
 				slog.Int("content_length", int(r.ContentLength)),
 			}
 		}),
-		httpbox.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
+		dino.WithAccessResponseAttrs(func(w http.ResponseWriter) []any {
 			return []any{
 				slog.String("content_type", "application/json"),
 				slog.Bool("cached", false),

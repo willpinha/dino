@@ -1,4 +1,4 @@
-package httpbox
+package dino
 
 import (
 	"log/slog"

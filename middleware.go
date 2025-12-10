@@ -1,4 +1,4 @@
-package httpbox
+package dino
 
 // Middleware is something
 type Middleware func(Handler) Handler

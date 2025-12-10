@@ -1,4 +1,4 @@
-package httpbox
+package dino
 
 import (
 	"errors"
@@ -21,7 +21,7 @@ func handleError(w http.ResponseWriter, err error) {
 	var httpErr *Error
 
 	// This avoids leaking internal error details to the client. The library user
-	// should wrap errors in httpbox.Error to provide proper status codes and messages
+	// should wrap errors in dino.Error to provide proper status codes and messages
 	if !errors.As(err, &httpErr) {
 		httpErr = NewError(http.StatusInternalServerError, "Unknown error occurred",
 			WithInternalError(err),
