@@ -1,4 +1,4 @@
-module github.com/willpinha/httpbox
+module github.com/willpinha/dino
 
 go 1.24.2
 

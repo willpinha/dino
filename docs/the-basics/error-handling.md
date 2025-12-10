@@ -50,7 +50,7 @@ which could lead to leaks of sensitive data (e.g. database information)
 The correct way to create new instances of `dino.Error` is through the
 [`dino.NewError`](https://pkg.go.dev/github.com/willpinha/dino#NewError) function. In addition to
 passing the status code and message, we can also pass any
-[`dino.ErrorOption`](https://pkg.go.dev/github.com/willpinha/httpbox#ErrorOption):
+[`dino.ErrorOption`](https://pkg.go.dev/github.com/willpinha/dino#ErrorOption):
 
 | Option                       | Description                                                                                                                                                      |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
