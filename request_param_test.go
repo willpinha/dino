@@ -10,44 +10,44 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewPathParam(t *testing.T) {
+func TestPathParam(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/users/123", nil)
 	req.SetPathValue("id", "123")
 
-	param := NewPathParam(req, "id")
+	param := PathParam(req, "id")
 
 	assert.Equal(t, "123", param.String())
 	assert.Equal(t, fromPath, param.from)
 	assert.Equal(t, "id", param.name)
 }
 
-func TestNewPathParam_Missing(t *testing.T) {
+func TestPathParam_Missing(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/users/", nil)
 
-	param := NewPathParam(req, "id")
+	param := PathParam(req, "id")
 
 	assert.Equal(t, "", param.String())
 }
 
-func TestNewQueryParam(t *testing.T) {
+func TestQueryParam(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/users?name=john", nil)
 
-	param := NewQueryParam(req, "name")
+	param := QueryParam(req, "name")
 
 	assert.Equal(t, "john", param.String())
 	assert.Equal(t, fromQuery, param.from)
 	assert.Equal(t, "name", param.name)
 }
 
-func TestNewQueryParam_Missing(t *testing.T) {
+func TestQueryParam_Missing(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/users", nil)
 
-	param := NewQueryParam(req, "name")
+	param := QueryParam(req, "name")
 
 	assert.Equal(t, "", param.String())
 }
 
-func TestNewDefaultQueryParam(t *testing.T) {
+func TestDefaultQueryParam(t *testing.T) {
 	tests := []struct {
 		name         string
 		url          string
@@ -81,14 +81,14 @@ func TestNewDefaultQueryParam(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, tt.url, nil)
-			param := NewDefaultQueryParam(req, tt.paramName, tt.defaultValue)
+			param := DefaultQueryParam(req, tt.paramName, tt.defaultValue)
 
 			assert.Equal(t, tt.expected, param.String())
 		})
 	}
 }
 
-func TestNewRequiredQueryParam(t *testing.T) {
+func TestRequiredQueryParam(t *testing.T) {
 	tests := []struct {
 		name      string
 		url       string
@@ -118,7 +118,7 @@ func TestNewRequiredQueryParam(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, tt.url, nil)
-			param, err := NewRequiredQueryParam(req, tt.paramName)
+			param, err := RequiredQueryParam(req, tt.paramName)
 
 			if tt.expectErr {
 				require.Error(t, err)
@@ -134,7 +134,7 @@ func TestNewRequiredQueryParam(t *testing.T) {
 
 func TestParam_String(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/test?value=hello", nil)
-	param := NewQueryParam(req, "value")
+	param := QueryParam(req, "value")
 
 	assert.Equal(t, "hello", param.String())
 }
@@ -157,7 +157,7 @@ func TestParam_Int(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/test?value="+tt.value, nil)
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			result, err := param.Int()
 
@@ -191,7 +191,7 @@ func TestParam_Float(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/test?value="+tt.value, nil)
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			result, err := param.Float()
 
@@ -229,7 +229,7 @@ func TestParam_Bool(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/test?value="+tt.value, nil)
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			result, err := param.Bool()
 
@@ -262,7 +262,7 @@ func TestParam_Time(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/test?value="+tt.value, nil)
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			result, err := param.Time(tt.format)
 
@@ -302,7 +302,7 @@ func TestParam_Duration(t *testing.T) {
 			q := req.URL.Query()
 			q.Set("value", tt.value)
 			req.URL.RawQuery = q.Encode()
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			result, err := param.Duration()
 
@@ -321,8 +321,8 @@ func TestParam_PathParamAndQueryParam(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/users/123?id=456", nil)
 	req.SetPathValue("id", "123")
 
-	pathParam := NewPathParam(req, "id")
-	queryParam := NewQueryParam(req, "id")
+	pathParam := PathParam(req, "id")
+	queryParam := QueryParam(req, "id")
 
 	assert.Equal(t, "123", pathParam.String(), "path param should be 123")
 	assert.Equal(t, "456", queryParam.String(), "query param should be 456")
@@ -333,9 +333,9 @@ func TestParam_PathParamAndQueryParam(t *testing.T) {
 func TestParam_MultipleQueryParams(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/search?q=golang&limit=10&sort=asc", nil)
 
-	qParam := NewQueryParam(req, "q")
-	limitParam := NewQueryParam(req, "limit")
-	sortParam := NewQueryParam(req, "sort")
+	qParam := QueryParam(req, "q")
+	limitParam := QueryParam(req, "limit")
+	sortParam := QueryParam(req, "sort")
 
 	assert.Equal(t, "golang", qParam.String())
 	assert.Equal(t, "10", limitParam.String())
@@ -361,7 +361,7 @@ func TestParam_SpecialCharacters(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/test?value="+tt.value, nil)
-			param := NewQueryParam(req, "value")
+			param := QueryParam(req, "value")
 
 			assert.Equal(t, tt.expected, param.String())
 		})
@@ -375,8 +375,8 @@ func TestParam_OverflowNumbers(t *testing.T) {
 	q.Set("float", "1.8e+308")
 	req.URL.RawQuery = q.Encode()
 
-	intParam := NewQueryParam(req, "int")
-	floatParam := NewQueryParam(req, "float")
+	intParam := QueryParam(req, "int")
+	floatParam := QueryParam(req, "float")
 
 	_, err := intParam.Int()
 	require.Error(t, err)

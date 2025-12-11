@@ -27,7 +27,7 @@ func (p Param) newError(msg string) error {
 	)
 }
 
-func NewPathParam(r *http.Request, name string) Param {
+func PathParam(r *http.Request, name string) Param {
 	return Param{
 		from:  fromPath,
 		name:  name,
@@ -35,7 +35,7 @@ func NewPathParam(r *http.Request, name string) Param {
 	}
 }
 
-func NewQueryParam(r *http.Request, name string) Param {
+func QueryParam(r *http.Request, name string) Param {
 	return Param{
 		from:  fromQuery,
 		name:  name,
@@ -43,8 +43,8 @@ func NewQueryParam(r *http.Request, name string) Param {
 	}
 }
 
-func NewDefaultQueryParam(r *http.Request, name, defaultValue string) Param {
-	p := NewQueryParam(r, name)
+func DefaultQueryParam(r *http.Request, name, defaultValue string) Param {
+	p := QueryParam(r, name)
 
 	if p.value == "" {
 		p.value = defaultValue
@@ -53,8 +53,8 @@ func NewDefaultQueryParam(r *http.Request, name, defaultValue string) Param {
 	return p
 }
 
-func NewRequiredQueryParam(r *http.Request, name string) (Param, error) {
-	p := NewQueryParam(r, name)
+func RequiredQueryParam(r *http.Request, name string) (Param, error) {
+	p := QueryParam(r, name)
 
 	if p.value == "" {
 		return Param{}, p.newError("is required")
