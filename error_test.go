@@ -18,8 +18,8 @@ func TestNewError_BasicCreation(t *testing.T) {
 	assert.Equal(t, code, err.Code)
 	assert.Equal(t, message, err.Message)
 	assert.Nil(t, err.Details)
-	assert.Nil(t, err.Err)
-	assert.True(t, err.Log)
+	assert.Nil(t, err.err)
+	assert.True(t, err.log)
 }
 
 func TestNewError_WithDetails(t *testing.T) {
@@ -46,8 +46,8 @@ func TestNewError_WithInternalError(t *testing.T) {
 
 	err := NewError(code, message, WithInternalError(internalErr))
 
-	require.NotNil(t, err.Err)
-	assert.Equal(t, "connection timeout", err.Err.Error())
+	require.NotNil(t, err.err)
+	assert.Equal(t, "connection timeout", err.err.Error())
 }
 
 func TestNewError_WithoutLog(t *testing.T) {
@@ -56,7 +56,7 @@ func TestNewError_WithoutLog(t *testing.T) {
 
 	err := NewError(code, message, WithoutLog())
 
-	assert.False(t, err.Log)
+	assert.False(t, err.log)
 }
 
 func TestNewError_WithAllOptions(t *testing.T) {
@@ -76,8 +76,8 @@ func TestNewError_WithAllOptions(t *testing.T) {
 	assert.Equal(t, code, err.Code)
 	assert.Equal(t, message, err.Message)
 	assert.Equal(t, details, err.Details)
-	assert.Equal(t, internalErr, err.Err)
-	assert.False(t, err.Log)
+	assert.Equal(t, internalErr, err.err)
+	assert.False(t, err.log)
 }
 
 func TestError_MultipleOptionsOrder(t *testing.T) {

@@ -32,14 +32,14 @@ func handleError(w http.ResponseWriter, err error) {
 
 		httpErr.Details = failedMsg
 
-		slog.Error(failedMsg, "error", err, "original_error", httpErr.Err)
+		slog.Error(failedMsg, "error", err, "original_error", httpErr.err)
 
 		// Since we overwrite Details, we ignore the error here as it will not occur
 		WriteJSON(w, httpErr.Code, httpErr)
 	}
 
-	if httpErr.Log {
-		slog.Error(httpErr.Message, "code", httpErr.Code, "details", httpErr.Details, "error", httpErr.Err)
+	if httpErr.log {
+		slog.Error(httpErr.Message, "code", httpErr.Code, "details", httpErr.Details, "error", httpErr.err)
 	}
 }
 

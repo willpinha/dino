@@ -4,8 +4,8 @@ type Error struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Details any    `json:"details,omitempty"`
-	Err     error  `json:"-"`
-	Log     bool   `json:"-"`
+	err     error  `json:"-"`
+	log     bool   `json:"-"`
 }
 
 type ErrorOption func(*Error)
@@ -18,7 +18,7 @@ func NewError(code int, message string, opts ...ErrorOption) *Error {
 	err := &Error{
 		Code:    code,
 		Message: message,
-		Log:     true,
+		log:     true,
 	}
 
 	for _, opt := range opts {
@@ -36,12 +36,12 @@ func WithDetails(details any) ErrorOption {
 
 func WithInternalError(internalErr error) ErrorOption {
 	return func(err *Error) {
-		err.Err = internalErr
+		err.err = internalErr
 	}
 }
 
 func WithoutLog() ErrorOption {
 	return func(err *Error) {
-		err.Log = false
+		err.log = false
 	}
 }
