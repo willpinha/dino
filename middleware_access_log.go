@@ -95,11 +95,11 @@ func AccessLogMiddleware(opts ...AccessLogOption) Middleware {
 
 			arw := newAccessResponseWriter(w)
 
-			now := time.Now()
+			startTime := time.Now()
 
 			err := h(arw, r)
 
-			resTime := time.Since(now)
+			resTime := time.Since(startTime)
 
 			reqAttrs := []any{
 				slog.String("method", r.Method),
